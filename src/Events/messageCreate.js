@@ -11,14 +11,17 @@ module.exports = new Event("messageCreate", (client, message) => {
 
 	const command = client.commands.find(cmd => cmd.name == args[0]);
 
-	if (!command) return message.reply(`${args[0]} is not a valid command!`);
+	if (!command){
+		return message.reply(`${args[0]} is not a valid command!`),
+		message.react('❌');
+	} 
 
 	const permission = message.member.permissions.has(command.permission, true);
 
-	if (!permission)
+	if (!permission){
 		return message.reply(
-			`You do not have the permission \`${command.permission}\` to run this command!`
-		);
+			`You do not have the permission \`${command.permission}\` to run this command!`);
+		}
 
 	command.run(message, args, client);
 });
